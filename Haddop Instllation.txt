@@ -1,0 +1,134 @@
+------------------------------------------------------------------------------------------------------------------					  					Hadoop Installation Script
+------------------------------------------------------------------------------------------------------------------
+
+
+
+------------------- > Installing Java on Ubuntu :
+
+--------- > sudo apt install default-jre default-jdk -y
+--------- > java -version
+--------- > readlink (wich javac)
+
+------------------- > Create a user for Hadoop and configure SSH :
+
+--------- > sudo adduser hadoop
+--------- > sudo usermod -aG sudo hadoop
+--------- > sudo su - hadoop
+--------- > sudo apt install openssh-server openssh-client -y
+--------- > ssh-keygen -t rsa
+--------- > cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys 
+--------- > sudo chmod 640 ~/.ssh/authorized_keys
+--------- > ssh localhost 
+
+------------------- > Download and install Apache Hadoop on Ubuntu :
+
+--------- > wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz
+--------- > tar -xvzf hadoop-3.3.6.tar.gz
+--------- > sudo mv hadoop-3.3.6 /usr/local/hadoop
+--------- > sudo mkdir /usr/local/hadoop/logs
+--------- > sudo chown -R hadoop:hadoop /usr/local/hadoop
+
+
+
+------------------- > Configure Hadoop on Ubuntu :
+
+--------- > sudo nano ~/.bashrc
+
+export HADOOP_HOME=/usr/local/hadoop
+export HADOOP_INSTALL=$HADOOP_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
+
+
+--------- > source ~/.bashrc
+
+------------------- > Configure java environment variables :
+
+--------- > sudo nano $HADOOP_HOME/etc/hadoop/hadoop-env.sh
+
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export HADOOP_CLASSPATH+=" $HADOOP_HOME/lib/*.jar"
+
+
+------------------- > Edit the hadoop-env.sh file :
+
+--------- > cd /usr/local/hadoop/lib
+--------- > sudo wget https://jcenter.bintray.com/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.jar
+--------- > hadoop version
+--------- > cd /usr/local/hadoop/lib
+
+------------------- > Edit the core-site.xml file :
+
+--------- > sudo nano $HADOOP_HOME/etc/hadoop/core-site.xml
+
+<property>
+
+      <name>fs.default.name</name>
+
+      <value>hdfs://localhost:9000</value>
+
+      <description>The default file system URI</description>
+
+</property>
+
+--------- > sudo mkdir -p /home/hadoop/hdfs/{namenode,datanode}
+--------- > sudo chown -R hadoop:hadoop /home/hadoop/hdfs
+
+
+------------------- > Edit the hdfs-site.xml configuration file :
+
+--------- > sudo nano $HADOOP_HOME/etc/hadoop/hdfs-site.xml
+<property>
+      <name>dfs.replication</name>
+      <value>1</value>
+</property>
+
+<property>
+      <name>dfs.name.dir</name>
+      <value>file:///home/hadoop/hdfs/namenode</value>
+</property>
+
+<property>
+      <name>dfs.data.dir</name>
+      <value>file:///home/hadoop/hdfs/datanode</value>
+</property>
+
+
+------------------- > Edit the mapred-site.xml file :
+
+--------- > sudo nano $HADOOP_HOME/etc/hadoop/mapred-site.xml
+
+<property>
+      <name>mapreduce.framework.name</name>
+      <value>yarn</value>
+</property>
+
+
+
+------------------- > Edit the yarn-site.xml file :
+
+--------- > sudo nano $HADOOP_HOME/etc/hadoop/yarn-site.xml
+
+<property>
+      <name>yarn.nodemanager.aux-services</name>
+      <value>mapreduce_shuffle</value>
+</property>
+
+------------------- > Start the Hadoop cluster :
+
+--------- > hdfs namenode -format
+--------- > start-dfs.sh
+--------- > start-yarn.sh
+--------- > jps
+
+------------------- > Access the Hadoop web interface :
+
+--------- > http://server-IP:9870
+
+
+--------- >

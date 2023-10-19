@@ -1,0 +1,32 @@
+----------------------------------------- Hbase Installation ------------------------------------------------------------
+
+-------> Install Hbase : wget http://www.interior-dsgn.com/apache/hbase/stable/hbase-2.5.5-bin.tar.gz
+-------> tar -zxvf hbase-2.5.5-bin.tar.gz
+
+-------> sudo mv hbase-2.5.5 /usr/local/Hbase
+-------> cd /usr/local/Hbase/conf
+
+-------> gedit hbase-env.sh
+-------> export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+	 export HADOOP_CLASSPATH+=" $HADOOP_HOME/lib/*.jar"
+	 
+-------> gedit hbase-site.xml
+-------> <configuration>
+   		<property>
+    			  <name>hbase.rootdir</name>
+    			  <!-- <value>file:/home/hadoop/Hbase/HFiles</value> -->
+	  		  <value>hdfs://0.0.0.0:9000/hbase</value> 
+   		</property>
+	
+   		<property>
+     			 <name>hbase.zookeeper.property.dataDir</name>
+    			  <value>/home/hadoop/zookeeper</value>
+   		</property>
+	</configuration>
+	
+-------> sudo gedit ~/.profile
+-------> export HBASE_HOME=/usr/local/Hbase
+	 export PATH=$PATH:$HBASE_HOME/bin
+-------> source ~/.profile
+ 
+-------> /usr/local/Hbase/bin/start-hbase.sh 

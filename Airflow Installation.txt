@@ -1,0 +1,26 @@
+
+------------------------------------------------------------------------------------------------------------------					  					Airflow Installation Script
+------------------------------------------------------------------------------------------------------------------
+
+------>sudo apt install python3-pip
+
+------>sudo pip3 install virtualenv
+
+------>virtualenv airflow_env
+
+------>source airflow env/bin/activate
+
+------>pip3 install apache-airflow[gcp,sentry,statsd]
+
+------>airflow db init
+
+------>mkdir dags
+
+------>airflow users create --username admin --password admin --firstname admin --lastname admin --role Admin --email youremail@mail.com
+
+------>airflow users list
+
+------>airflow scheduler
+
+------>airflow webserver
+
