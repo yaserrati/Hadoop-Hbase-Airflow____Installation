@@ -7,7 +7,7 @@
 
 --------- > sudo apt install default-jre default-jdk -y
 --------- > java -version
---------- > readlink (wich javac)
+--------- > readlink $(which javac)
 
 ------------------- > Create a user for Hadoop and configure SSH :
 

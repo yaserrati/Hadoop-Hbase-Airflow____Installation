@@ -8,7 +8,7 @@
 
 ------>virtualenv airflow_env
 
------->source airflow env/bin/activate
+------>source airflow_env/bin/activate
 
 ------>pip3 install apache-airflow[gcp,sentry,statsd]
 
